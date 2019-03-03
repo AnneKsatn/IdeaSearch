@@ -1,3 +1,4 @@
+import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -11,6 +12,13 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 public class searchQuery extends AnAction {
+
+    String[] links = {"https://www.google.ru/search?q=",
+            "http://yandex.ru/yandsearch?lr=10&text= ",
+            "https://search.yahoo.com/search?p=",
+            "https://www.bing.com/search?q",
+    };
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
 
@@ -24,20 +32,18 @@ public class searchQuery extends AnAction {
                 selectedString);
 
         JCheckBox check = new JCheckBox("Подтверждаю");
+
         Object[] options = {"Google", "Yandex", "Yahoo", "Bing", check};
+
 
         int x = JOptionPane.showOptionDialog(null, "Выберете поисковик",
                 "Поисковик",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+                JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
 
         if (check.isSelected() && x != -1) {
-            System.out.println("Your choice was " + options[x]);
-        } else {
-            System.out.println(":( no choice");
+            BrowserUtil.browse(links[x] + result);
         }
-
-        System.out.println(result);
 
     }
 }
