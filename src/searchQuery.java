@@ -13,6 +13,7 @@ import org.intellij.lang.annotations.JdkConstants;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -22,11 +23,14 @@ import java.net.URI;
 
 public class searchQuery extends AnAction {
 
-    String[] links = {"https://www.google.ru/search?q=",
+   private String[] links = {
+           "https://www.google.ru/search?q=",
             "http://yandex.ru/yandsearch?lr=10&text= ",
             "https://search.yahoo.com/search?p=",
-            "https://www.bing.com/search?q",
+            "https://www.bing.com/search?q=",
     };
+
+   private String [] listEnties = {"Google", "Yandex", "Yahoo", "Bing"};
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
@@ -36,27 +40,25 @@ public class searchQuery extends AnAction {
         CaretModel caretModel = editor.getCaretModel();
         String selectedString = caretModel.getCurrentCaret().getSelectedText();
 
-        JPanel textPanel = new JPanel();
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-        JTextField text = new JTextField(selectedString,20);
-
-        JLabel label = new JLabel("Сформируйте запрос", SwingConstants.CENTER);
-        textPanel.add(label);
-        textPanel.add(text);
-
-        String [] listEnties = {"Google", "Yandex", "Yahoo", "Bing"};
-
         JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+
+        JPanel textPanel = new JPanel();
+        textPanel.setBackground(Color.darkGray);
+        JTextField text = new JTextField(selectedString,20);
+        textPanel.add(text, SwingConstants.CENTER);
+
+        JPanel labelPanel = new JPanel();
+        JLabel label = new JLabel("Сформируйте запрос", SwingConstants.CENTER);
+        labelPanel.add(label, SwingConstants.CENTER);
 
         JPanel listPanel = new JPanel();
         listPanel.setBackground(Color.darkGray);
-
         JBList list = new JBList(listEnties);
         list.setVisibleRowCount(4);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listPanel.add(list);
+        listPanel.add(list, SwingConstants.CENTER);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
@@ -65,7 +67,7 @@ public class searchQuery extends AnAction {
         Button okButton = new Button("Окей");
         Button exitButton = new Button("Выход");
 
-        Component horizontalStrut = Box.createHorizontalStrut(15);
+        Component horizontalStrut = Box.createHorizontalStrut(25);
 
         buttonPanel.add(okButton);
         buttonPanel.add(horizontalStrut);
@@ -96,12 +98,24 @@ public class searchQuery extends AnAction {
             }
         });
 
-        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
-        frame.getContentPane().add(textPanel);
-        frame.getContentPane().add(listPanel);
-        frame.getContentPane().add(buttonPanel);
-        frame.setSize(300,320);
+        JPanel panel = new JPanel();
+        BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+
+        panel.setLayout(boxlayout);
+        panel.setBorder(new EmptyBorder(new Insets(40, 40, 40, 40)));
+
+        panel.add(labelPanel);
+        panel.add(Box.createRigidArea(new Dimension(0, 40)));
+        panel.add(textPanel);
+        panel.add(Box.createRigidArea(new Dimension(0, 40)));
+        panel.add(listPanel);
+        panel.add(Box.createRigidArea(new Dimension(0, 40)));
+        panel.add(buttonPanel);
+
+
+        frame.add(panel);
+        frame.pack();
         frame.setVisible(true);
 
         }
