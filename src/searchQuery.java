@@ -36,9 +36,13 @@ public class searchQuery extends AnAction {
         CaretModel caretModel = editor.getCaretModel();
         String selectedString = caretModel.getCurrentCaret().getSelectedText();
 
-        String request = JOptionPane.showInputDialog(
-                "Сформируйте запрос",
-                selectedString);
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        JTextField text = new JTextField(selectedString,20);
+
+        JLabel label = new JLabel("Сформируйте запрос", SwingConstants.CENTER);
+        textPanel.add(label);
+        textPanel.add(text);
 
         String [] listEnties = {"Google", "Yandex", "Yahoo", "Bing"};
 
@@ -55,21 +59,25 @@ public class searchQuery extends AnAction {
         listPanel.add(list);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BorderLayout());
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.setBackground(Color.darkGray);
 
         Button okButton = new Button("Окей");
         Button exitButton = new Button("Выход");
 
-        buttonPanel.add(BorderLayout.WEST, okButton);
-        buttonPanel.add(BorderLayout.EAST, exitButton);
+        Component horizontalStrut = Box.createHorizontalStrut(15);
+
+        buttonPanel.add(okButton);
+        buttonPanel.add(horizontalStrut);
+        buttonPanel.add(exitButton);
+
 
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (list.getSelectedIndex() != -1) {
 
-                     BrowserUtil.browse(links[list.getSelectedIndex()] + request);
+                     BrowserUtil.browse(links[list.getSelectedIndex()] + text.getText());
                     frame.setVisible(false);
                     frame.dispose();
 
@@ -88,22 +96,14 @@ public class searchQuery extends AnAction {
             }
         });
 
-        frame.getContentPane().add(BorderLayout.SOUTH, buttonPanel);
-        frame.getContentPane().add(BorderLayout.CENTER, listPanel);
-        frame.setSize(150,200);
+        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+
+        frame.getContentPane().add(textPanel);
+        frame.getContentPane().add(listPanel);
+        frame.getContentPane().add(buttonPanel);
+        frame.setSize(300,320);
         frame.setVisible(true);
 
-        
-
-
-       /* int x = JOptionPane.showOptionDialog(null, "Выберете поисковик",
-                "Поисковик",
-                JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
-
-
-        if (check.isSelected() && x != -1) {
-            BrowserUtil.browse(links[x] + result);
-            */
         }
 
     }
