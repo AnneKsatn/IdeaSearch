@@ -16,6 +16,9 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
 
 public class searchQuery extends AnAction {
 
@@ -60,6 +63,30 @@ public class searchQuery extends AnAction {
 
         buttonPanel.add(BorderLayout.WEST, okButton);
         buttonPanel.add(BorderLayout.EAST, exitButton);
+
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (list.getSelectedIndex() != -1) {
+
+                     BrowserUtil.browse(links[list.getSelectedIndex()] + request);
+                    frame.setVisible(false);
+                    frame.dispose();
+
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Вы не сделали выбор!");
+                }
+            }
+        });
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                frame.dispose();
+            }
+        });
 
         frame.getContentPane().add(BorderLayout.SOUTH, buttonPanel);
         frame.getContentPane().add(BorderLayout.CENTER, listPanel);
