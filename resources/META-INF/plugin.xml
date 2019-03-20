@@ -13,6 +13,12 @@
   <depends>com.intellij.modules.lang</depends>
   -->
 
+  <application-components>
+    <component>
+      <implementation-class>SearchPanel</implementation-class>
+    </component>
+  </application-components>
+
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
   </extensions>
@@ -24,6 +30,7 @@
             description="make a search query">
       <add-to-group group-id="EditorPopupMenu" anchor="last"/>
     </action>
+
   </actions>
 
 </idea-plugin>
