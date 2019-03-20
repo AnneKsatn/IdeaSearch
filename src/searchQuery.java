@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
@@ -19,6 +20,9 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 
 public class searchQuery extends AnAction {
@@ -78,7 +82,7 @@ public class searchQuery extends AnAction {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (list.getSelectedIndex() != -1) {
-
+                    addToSearchFile(text.getText(), anActionEvent.getProject());
                      BrowserUtil.browse(links[list.getSelectedIndex()] + text.getText());
                     frame.setVisible(false);
                     frame.dispose();
@@ -118,6 +122,22 @@ public class searchQuery extends AnAction {
         frame.pack();
         frame.setVisible(true);
 
+
+        }
+
+        public void addToSearchFile(String text, Project project){
+
+        String fileName =   project.getBasePath() + File.separator + Project.DIRECTORY_STORE_FOLDER + File.separator + ".curNotes.txt";
+            try(
+                    FileWriter writer = new FileWriter(fileName, true))
+            {
+                writer.write(text + "\n" + "\n");
+                writer.flush();
+            }
+            catch(IOException ex){
+
+                System.out.println(ex.getMessage());
+            }
         }
 
     }
