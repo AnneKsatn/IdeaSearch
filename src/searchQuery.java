@@ -127,7 +127,7 @@ public class searchQuery extends AnAction {
 
         public void addToSearchFile(String text, Project project){
 
-        String fileName =   project.getBasePath() + File.separator + Project.DIRECTORY_STORE_FOLDER + File.separator + ".curNotes.txt";
+        String fileName = project.getBasePath() + File.separator + Project.DIRECTORY_STORE_FOLDER + File.separator + ".searchFile.txt";
             try(
                     FileWriter writer = new FileWriter(fileName, true))
             {
